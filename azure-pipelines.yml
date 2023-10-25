@@ -19,7 +19,7 @@ stages:
           - task: TerraformInstaller@1
             displayName: tfinstall
             inputs:
-              terraformVersion: '1.4.6'
+              terraformVersion: 'latest'
           - task: TerraformTaskV4@4
             displayName: init
             inputs:
