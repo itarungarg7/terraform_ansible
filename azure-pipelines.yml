@@ -4,6 +4,12 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  bkstrgrg: 'terraform_ansible'
+  bkstrg: 'terraformansiblerg'
+  bkcontainer: 'terraformansiblecont'
+  bkstrgkey: 'terraform.tfstate'
+
 stages:
   - stage: tfvalidate
     jobs:
@@ -19,11 +25,11 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-              backendServiceArm: 'Azure subscription 1(1)(c4d004c5-5fd9-4d27-821f-5fcceea4e956)'
-              backendAzureRmResourceGroupName: 'terraform_ansible'
-              backendAzureRmStorageAccountName: 'terraformansiblerg'
-              backendAzureRmContainerName: 'terraformansiblecont'
-              backendAzureRmKey: 'terraform.tfstate'
+              backendServiceArm: 'terraform_ansible'
+              backendAzureRmResourceGroupName: '$(bkstrgrg)'
+              backendAzureRmStorageAccountName: '$(bkstrg)'
+              backendAzureRmContainerName: '$(bkcontainer)'
+              backendAzureRmKey: '$(bkstrgkey)'
           - task: TerraformTaskV4@4
             displayName: validate
             inputs:
@@ -44,20 +50,20 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-              backendServiceArm: 'Azure subscription 1(1)(c4d004c5-5fd9-4d27-821f-5fcceea4e956)'
-              backendAzureRmResourceGroupName: 'terraform_ansible'
-              backendAzureRmStorageAccountName: 'terraformansiblerg'
-              backendAzureRmContainerName: 'terraformansiblecont'
-              backendAzureRmKey: 'terraform.tfstate'
+              backendServiceArm: 'terraform_ansible'
+              backendAzureRmResourceGroupName: '$(bkstrgrg)'
+              backendAzureRmStorageAccountName: '$(bkstrg)'
+              backendAzureRmContainerName: '$(bkcontainer)'
+              backendAzureRmKey: '$(bkstrgkey)'
           - task: TerraformTaskV4@4
             displayName: plan
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              environmentServiceNameAzureRM: 'Azure subscription 1(1)(c4d004c5-5fd9-4d27-821f-5fcceea4e956)'
+              environmentServiceNameAzureRM: 'terraform_ansible'
           - task: TerraformTaskV4@4
             displayName: apply
             inputs:
               provider: 'azurerm'
               command: 'apply'
-              environmentServiceNameAzureRM: 'Azure subscription 1(1)(c4d004c5-5fd9-4d27-821f-5fcceea4e956)'
+              environmentServiceNameAzureRM: 'terraform_ansible'
