@@ -76,13 +76,3 @@ provisioner "remote-exec" {
 ]
 }
 }
-
-resource "null_resource" "nullremote3" {
-  depends_on = [null_resource.nullremote2]
-  triggers = {
-    always_run = "${random_integer.trigger.result}"
-  }
-  provisioner "local-exec" {
-    command = "C:\\a\\chrome.exe http://${module.compute.ip}"
-  }
-}
