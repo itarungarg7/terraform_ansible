@@ -1,0 +1,68 @@
+trigger: main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  bkstrgrg: 'terraform_ansible'
+  bkstrg: 'terraformansiblerg'
+  bkcontainer: 'terraformansiblecont'
+  bkstrgkey: 'terraform.tfstate'
+
+stages:
+  - stage: tfvalidate
+    jobs:
+      - job: validate
+        continueOnError: false
+        steps:
+          - task: TerraformInstaller@1
+            displayName: tfinstall
+            inputs:
+              terraformVersion: '1.4.6'
+          - task: TerraformTaskV4@4
+            displayName: init
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'terraform_ansible'
+              backendAzureRmResourceGroupName: '$(bkstrgrg)'
+              backendAzureRmStorageAccountName: '$(bkstrg)'
+              backendAzureRmContainerName: '$(bkcontainer)'
+              backendAzureRmKey: '$(bkstrgkey)'
+          - task: TerraformTaskV4@4
+            displayName: validate
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+  - stage: tfdeploy
+    condition: succeeded('tfvalidate')
+    dependsOn: tfvalidate
+    jobs: 
+      - job: apply
+        steps:
+          - task: TerraformInstaller@1
+            displayName: tfinstall
+            inputs:
+              terraformVersion: '1.4.6'
+          - task: TerraformTaskV4@4
+            displayName: init
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'terraform_ansible'
+              backendAzureRmResourceGroupName: '$(bkstrgrg)'
+              backendAzureRmStorageAccountName: '$(bkstrg)'
+              backendAzureRmContainerName: '$(bkcontainer)'
+              backendAzureRmKey: '$(bkstrgkey)'
+          - task: TerraformTaskV4@4
+            displayName: plan
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'terraform_ansible'
+          - task: TerraformTaskV4@4
+            displayName: apply
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              environmentServiceNameAzureRM: 'terraform_ansible'
