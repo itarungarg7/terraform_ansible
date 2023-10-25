@@ -1,0 +1,43 @@
+trigger: 
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  bkstrgrg: 'terraform_ansible'
+  bkstrg: 'terraformansiblerg'
+  bkcontainer: 'terraformansiblecont'
+  bkstrgkey: 'terraform.tfstate'
+
+stages:
+  - stage: tfdestroy
+    jobs: 
+      - job: destroy
+        steps:
+          - task: TerraformInstaller@1
+            displayName: tfinstall
+            inputs:
+              terraformVersion: '1.4.6'
+          - task: TerraformTaskV4@4
+            displayName: init
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'terraform_ansible'
+              backendAzureRmResourceGroupName: '$(bkstrgrg)'
+              backendAzureRmStorageAccountName: '$(bkstrg)'
+              backendAzureRmContainerName: '$(bkcontainer)'
+              backendAzureRmKey: '$(bkstrgkey)'
+          - task: TerraformTaskV4@4
+            displayName: plan
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'terraform_ansible'
+          - task: TerraformTaskV4@4
+            displayName: destroy
+            inputs:
+              provider: 'azurerm'
+              command: 'destroy'
+              environmentServiceNameAzureRM: 'terraform_ansible'
