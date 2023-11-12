@@ -31,7 +31,7 @@ This file contains variable values that customize the deployment. Adjust these v
 - **variables.tf**
 This file defines input variables used in the Terraform configuration. Descriptions are provided for each variable to aid in understanding their purpose.
 
-- Pipeline Variables
+Pipeline Variables
 The Azure Pipelines configurations use the following variables:
 
 bkstrgrg
