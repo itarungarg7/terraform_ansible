@@ -40,6 +40,14 @@ bkcontainer
 bkstrgkey
 These variables are used to configure the Azure Storage Backend for storing Terraform state.
 
+- **Ansible Configuration**
+
+Ansible Control Node
+The Ansible control node is hosted on an Azure VM, dynamically configuring other Azure VMs as Ansible agent nodes. This dynamic configuration is facilitated through the Terraform provisioning process.
+
+Ansible Playbook (instance.yml)
+The Ansible playbook instance.yml is transferred and executed on the Azure VMs. It dynamically configures them based on the specified roles and tasks.
+
 **Getting Started**
 
 1. Ensure you have the necessary permissions and credentials to deploy resources to Azure.
