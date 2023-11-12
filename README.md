@@ -46,7 +46,7 @@ Ansible Control Node
 The Ansible control node is hosted on an Azure VM, dynamically configuring other Azure VMs as Ansible agent nodes. This dynamic configuration is facilitated through the Terraform provisioning process.
 
 Ansible Playbook (instance.yml)
-The Ansible playbook instance.yml is transferred and executed on the Azure VMs. It dynamically configures them based on the specified roles and tasks.
+The Ansible playbook instance.yml is transferred and executed on the Azure VMs. It dynamically configures the Azure virtual machine as an ansible agent node provisioned by Terraform.
 
 **Getting Started**
 
